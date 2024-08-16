@@ -3,10 +3,7 @@ package config
 
 import matchers.*
 
-import org.scalatest.freespec.*
-import org.scalatest.matchers.should.*
-
-class ConfigurationTest extends AnyFreeSpec with Matchers {
+class ConfigurationTest extends AbstractComposerrTest {
 
   "A Configuration" - {
     "should have a default value of false for skipChecks" in {

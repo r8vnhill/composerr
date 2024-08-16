@@ -46,7 +46,11 @@ object ConfigurationDsl {
    * @param ctx The implicit [[ConfigurationContext]] used to access the configuration.
    * @return The current [[Configuration]] instance.
    */
-  def config(using ctx: ConfigurationContext): Configuration = ctx.configuration
+  def configuration(init: ConfigurationContext ?=> ConfigurationContext)(using ctx: ConfigurationContext): Configuration = {
+    init
+    ctx.configuration
+  }
+    
 
   /**
    * Sets the `skipChecks` property in the given [[ConfigurationContext]] and returns the updated context.
