@@ -37,7 +37,7 @@ class ComposerrScopeTest extends AbstractComposerrTest {
           }
         }
       }
-      
+
       "when validating a mustNot clause" - {
         "should add a success or a failure to the outer scope" in {
           forAll(
@@ -59,7 +59,7 @@ class ComposerrScopeTest extends AbstractComposerrTest {
           }
         }
       }
-      
+
       "when validating a constraint" - {
         "should add a success or a failure to the outer scope" in {
           forAll(
@@ -77,6 +77,29 @@ class ComposerrScopeTest extends AbstractComposerrTest {
               }
             }
           }
+        }
+      }
+    }
+
+    "should have a list of results that" - {
+      "should be empty when no validations have been performed" in {
+        val scope = ComposerrScope()
+        scope.results should be(empty)
+      }
+
+      "should contain the results of the validations" in {
+        forAll(
+          Arbitrary.arbString.arbitrary,
+          arbHaveSize[Any](),
+          Gen.listOfN(10, Gen.listOfN(10, Arbitrary.arbString.arbitrary))
+        ) { (message, constraint, vss) =>
+          val scope = ComposerrScope()
+          val stringScope = scope.StringScope(message)
+          import stringScope.must
+          vss.foreach { vs =>
+            vs must constraint
+          }
+          scope.results should have size vss.size
         }
       }
     }
